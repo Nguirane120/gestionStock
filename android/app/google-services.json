@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926343745991",
+    "project_id": "gestionstock-32189",
+    "storage_bucket": "gestionstock-32189.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926343745991:android:11a3441c7db1606b8749e2",
+        "android_client_info": {
+          "package_name": "com.example.gestionstock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmhRVbtXkD23vI1UydybArTg1bYgInofE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

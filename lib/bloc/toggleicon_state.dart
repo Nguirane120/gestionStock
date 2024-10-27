@@ -1,9 +1,9 @@
 part of 'toggleicon_bloc.dart';
 
 @immutable
-sealed class ToggleiconState {}
+abstract class ToggleiconState {}
 
-final class ToggleiconInitial extends ToggleiconState {
+ class ToggleiconInitial extends ToggleiconState {
   final bool isOn;
   ToggleiconInitial(this.isOn);
 }
