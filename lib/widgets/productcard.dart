@@ -16,49 +16,63 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-          leading: product.imageUrl.isNotEmpty
-              ? CircleAvatar(
-                  child: Image.network(
-                  product.imageUrl,
-                ))
-              : const Icon(Icons.image),
-          title: Text(product.name),
-          subtitle: InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Productdeatil(
-                  product: product,
-                );
-              }));
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Category: ${product.category}"),
-                BlocBuilder<ProductBloc, ProductState>(
-                  builder: (context, state) {
-                    return Text("Quantity: ${product.quantity}");
-                  },
-                ),
-              ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        child: ListTile(
+            leading: product.imageUrl.isNotEmpty
+                ? Hero(
+                    tag: "product-${product.id}",
+                    child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                      product.imageUrl,
+                    )),
+                  )
+                : const Icon(Icons.image),
+            title: Text(product.name),
+            subtitle: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Productdeatil(
+                    product: product,
+                  );
+                }));
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Category: ${product.category}"),
+                  BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      return Text("Quantity: ${product.quantity}");
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          trailing: Container(
-            decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(30)),
-            child: IconButton(
-                onPressed: () {
-                  context
-                      .read<ProductBloc>()
-                      .add(IncreaseQuantityEvent(product.id));
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                )),
-          )),
+            trailing: BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                bool isUpdating = state is ProductQuantityUpdating &&
+                    state.productId == product.id;
+      
+                return Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: IconButton(
+                      onPressed: () {
+                        context
+                            .read<ProductBloc>()
+                            .add(IncreaseQuantityEvent(product.id));
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )),
+                );
+              },
+            )),
+      ),
     );
   }
 }

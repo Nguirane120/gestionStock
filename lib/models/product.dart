@@ -5,7 +5,7 @@ class Product {
   String description;
   String imageUrl;
   int quantity;
-  String userEmail;
+  String? userEmail;
 
   Product(
       {required this.id,
@@ -14,7 +14,7 @@ class Product {
       required this.description,
       required this.imageUrl,
       required this.quantity,
-      required this.userEmail});
+       this.userEmail});
 
 
   Map<String, dynamic> toMap() {

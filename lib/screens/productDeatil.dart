@@ -4,6 +4,7 @@ import 'package:gestionstock/bloc/block_product_bloc.dart';
 import 'package:gestionstock/bloc/block_product_event.dart';
 import 'package:gestionstock/bloc/block_product_state.dart';
 import 'package:gestionstock/models/product.dart';
+import 'package:gestionstock/screens/productForm.dart';
 
 class Productdeatil extends StatelessWidget {
   const Productdeatil({Key? key, required this.product}) : super(key: key);
@@ -13,16 +14,30 @@ class Productdeatil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detail produit"),
+        title: const Text("Detail produit"),
       ),
       body: Column(
         children: [
-          Container(
-            child: Image.network(product.imageUrl),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Hero(
+              tag: "product-${product.id}",
+              child: Image.network(
+                product.imageUrl,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Text(product.name),
           Text(product.category),
           Text(product.description),
+          const SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -31,7 +46,7 @@ class Productdeatil extends StatelessWidget {
                   return Text(product.quantity.toString());
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Container(
@@ -44,13 +59,41 @@ class Productdeatil extends StatelessWidget {
                           .read<ProductBloc>()
                           .add(DecreaseQuantityEvent(product.id));
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.remove,
                       color: Colors.white,
                     )),
               ),
+              const SizedBox(
+                width: 15,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(30)),
+                child: IconButton(
+                    onPressed: () {
+                      context
+                          .read<ProductBloc>()
+                          .add(DeleteProductEvent(product.id));
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    )),
+              ),
             ],
-          )
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ProductFormScreen(product: product,);
+                }));
+              },
+              child: const Text("Modfier"))
         ],
       ),
     );

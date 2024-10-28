@@ -63,4 +63,24 @@ class ProductRepository {
     });
   }
 
+   Future<void> deleteProduct(String productId) async {
+    await firestore.collection('products').doc(productId).delete();
+  }
+  
+  Future<void> updateProduct({
+    required String productId,
+    required String name,
+    required String category,
+    required String description,
+    required int quantity,
+    required String imageUrl,
+  }) async {
+    await firestore.collection('products').doc(productId).update({
+      'name': name,
+      'category': category,
+      'description': description,
+      'quantity': quantity,
+      'imageUrl': imageUrl,
+    });
+  }
 }

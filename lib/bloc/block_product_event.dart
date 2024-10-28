@@ -11,7 +11,26 @@ class AddProductEvent extends ProductEvent {
   final String user;
   final File imageFile;
 
-  AddProductEvent(this.name, this.category, this.description, this.quantity, this.imageFile, this.user);
+  AddProductEvent(this.name, this.category, this.description, this.quantity,
+      this.imageFile, this.user);
+}
+
+class EditProductEvent extends ProductEvent {
+  final String productId;
+  final String name;
+  final String category;
+  final String description;
+  final int quantity;
+  final String imageUrl;
+
+  EditProductEvent({
+    required this.productId,
+    required this.name,
+    required this.category,
+    required this.description,
+    required this.quantity,
+    required this.imageUrl,
+  });
 }
 
 class FetchProductsEvent extends ProductEvent {}
@@ -21,12 +40,13 @@ class DeleteProductEvent extends ProductEvent {
 
   DeleteProductEvent(this.productId);
 }
+
 class IncreaseQuantityEvent extends ProductEvent {
-  final String productId; 
+  final String productId;
   IncreaseQuantityEvent(this.productId);
 }
 
 class DecreaseQuantityEvent extends ProductEvent {
-  final String productId; 
+  final String productId;
   DecreaseQuantityEvent(this.productId);
 }

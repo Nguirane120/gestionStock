@@ -9,33 +9,77 @@ import 'package:gestionstock/models/product.dart';
 import 'package:gestionstock/repository/productRepository.dart';
 import 'package:gestionstock/widgets/productcard.dart';
 
-class ProductListScreen extends StatelessWidget {
+class ProductListScreen extends StatefulWidget {
+  @override
+  _ProductListScreenState createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends State<ProductListScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchTerm = '';
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductBloc>().add(FetchProductsEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Déclenche l'événement de récupération des produits
-    context.read<ProductBloc>().add(FetchProductsEvent());
-
     return Scaffold(
-      body: BlocBuilder<ProductBloc, ProductState>(
-        builder: (context, state) {
-          if (state is ProductLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is ProductLoaded) {
-            return ListView.builder(
-              itemCount: state.products.length,
-              itemBuilder: (context, index) {
-                final product = state.products[index];
-                return ProductCard(product: product);
+    
+      body: Column(
+        children: [
+           Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {
+                  _searchTerm = value.toLowerCase(); 
+                });
               },
-            );
-          } else if (state is ProductError) {
-            return Center(child: Text("Erreur : ${state.error}"));
-          } else {
-            return Center(child: Text("Aucun produit trouvé"));
-          }
-        },
+              decoration: InputDecoration(
+                hintText: 'Rechercher un produit...',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),),
+          Expanded(
+            child: BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is ProductLoaded) {
+                  
+                  final filteredProducts = state.products.where((product) {
+                    return product.name.toLowerCase().contains(_searchTerm) ||
+                           product.category.toLowerCase().contains(_searchTerm);
+                  }).toList();
+            
+                  return ListView.builder(
+                    itemCount: filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      final product = filteredProducts[index];
+                      return ProductCard(product: product);
+                    },
+                  );
+                } else if (state is ProductError) {
+                  return Center(child: Text("Erreur : ${state.error}"));
+                } else {
+                  return Center(child: Text("Aucun produit trouvé"));
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
-}
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+}

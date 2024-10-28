@@ -15,13 +15,13 @@ class HomeScreen extends StatelessWidget {
         if (state is! AuthAuthenticated) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
           );
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Gestion des stocks'),
+          title: const Text('Gestion des stocks'),
           actions: [
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                     BlocProvider.of<AuthBloc>(context)
                         .add(AuthSignOutRequested());
                   },
-                  icon: Icon(Icons.logout),
+                  icon: const Icon(Icons.logout),
                 );
               },
             ),
@@ -41,9 +41,9 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: Colors.black,
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProductFormScreen()));
+                MaterialPageRoute(builder: (context) =>  ProductFormScreen()));
           },
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: Colors.white,
           ),

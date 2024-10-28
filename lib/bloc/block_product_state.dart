@@ -20,6 +20,15 @@ class ProductLoaded extends ProductState {
   List<Object?> get props => [products];
 }
 
+class ProductQuantityUpdating extends ProductState {
+  final String productId;
+  
+  ProductQuantityUpdating(this.productId);
+  
+  @override
+  List<Object?> get props => [productId];
+}
+
 class ProductError extends ProductState {
   final String error;
 
