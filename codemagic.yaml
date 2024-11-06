@@ -3,3 +3,12 @@ workflows:
         name: Android Sample Workflow
         environment:
             flutter: stable
+
+        publishing:
+          email:
+            recipients:
+              - nguiranedev120@gmail.com
+
+            notify:
+              succes: true
+              failure: true
