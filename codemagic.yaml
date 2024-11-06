@@ -8,7 +8,6 @@ workflows:
           email:
             recipients:
               - nguiranedev120@gmail.com
-
             notify:
-              succes: true
+              success: true
               failure: true
